@@ -1,0 +1,10 @@
+{
+  "parent": "colorfulsculk:block/tinted_shrieker",
+  "textures": {
+    "particle": "colorfulsculk:block/sculk_shrieker_side",
+    "inner_top": "colorfulsculk:block/sculk_shrieker_can_summon_inner_top",
+    "top":  "colorfulsculk:block/sculk_shrieker_top",
+    "side":  "colorfulsculk:block/sculk_shrieker_side",
+    "bottom":  "colorfulsculk:block/sculk_shrieker_bottom"
+  }
+}

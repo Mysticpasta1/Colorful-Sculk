@@ -1,0 +1,12 @@
+{
+  "parent": "colorfulsculk:block/tinted_cube",
+  "textures": {
+    "particle": "colorfulsculk:block/sculk",
+    "north":  "colorfulsculk:block/sculk",
+    "east":  "colorfulsculk:block/sculk",
+    "south":  "colorfulsculk:block/sculk",
+    "west":  "colorfulsculk:block/sculk",
+    "up":  "colorfulsculk:block/sculk",
+    "down":  "colorfulsculk:block/sculk"
+  }
+}

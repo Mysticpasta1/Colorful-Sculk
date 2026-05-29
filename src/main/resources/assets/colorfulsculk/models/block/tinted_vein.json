@@ -1,0 +1,17 @@
+{
+    "ambientocclusion": false,
+    "textures": {
+        "particle": "#all",
+        "sculk_vein": "#all"
+    },
+    "elements": [
+        {
+            "from": [0, 0, 0.1],
+            "to": [16, 16, 1.6],
+            "faces": {
+                "north": { "uv": [0, 0, 16, 16], "texture": "#all", "tintindex": 0 },
+                "south": { "uv": [0, 0, 16, 16], "texture": "#all", "tintindex": 0 }
+            }
+        }
+    ]
+}

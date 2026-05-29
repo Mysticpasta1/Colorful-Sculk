@@ -1,0 +1,10 @@
+{
+  "parent": "colorfulsculk:block/tinted_sensor",
+  "textures": {
+    "particle": "colorfulsculk:block/sculk_sensor_side",
+    "top":  "colorfulsculk:block/sculk_sensor_top",
+    "side":  "colorfulsculk:block/sculk_sensor_side",
+    "bottom":  "colorfulsculk:block/sculk_sensor_bottom",
+    "tendrils":  "colorfulsculk:block/sculk_sensor_tendril_active"
+  }
+}

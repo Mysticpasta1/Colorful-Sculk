@@ -1,0 +1,9 @@
+{
+  "parent": "colorfulsculk:block/tinted_catalyst",
+  "textures": {
+    "particle": "colorfulsculk:block/sculk_catalyst_side",
+    "top":  "colorfulsculk:block/sculk_catalyst_top",
+    "side":  "colorfulsculk:block/sculk_catalyst_side",
+    "bottom":  "colorfulsculk:block/sculk_catalyst_bottom"
+  }
+}

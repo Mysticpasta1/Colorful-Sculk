@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.mystic.colorfulsculk.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "colorfulsculk.refmap.json",
+  "mixins": [
+    "SculkShriekerBlockEntityMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

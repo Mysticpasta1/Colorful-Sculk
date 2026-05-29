@@ -1,0 +1,7 @@
+{
+  "parent": "colorfulsculk:block/tinted_vein",
+  "textures": {
+    "particle": "colorfulsculk:block/sculk_vein",
+    "all": "colorfulsculk:block/sculk_vein"
+  }
+}
