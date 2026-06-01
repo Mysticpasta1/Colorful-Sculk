@@ -8,6 +8,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 
 import javax.annotation.Nullable;
@@ -35,6 +36,17 @@ public interface ColoredSculkBehaviour {
                 if (p_222051_ == null) {
                     return ((ColoredSculkVein) BlockInit.COLORED_SCULK_VEIN.get(spreaderColor).get()).getSameSpaceSpreader().spreadAll(p_222048_.getBlockState(p_222049_), p_222048_, p_222049_, p_222052_) > 0L;
                 } else if (!p_222051_.isEmpty()) {
+                    if (p_222050_.getBlock() instanceof ColoredSculkVein sculkVein && sculkVein.getColor() != spreaderColor) {
+                        BlockState newState = BlockInit.COLORED_SCULK_VEIN.get(spreaderColor).get().defaultBlockState();
+                        for(Direction dir : p_222051_) {
+                            newState = newState.setValue(MultifaceBlock.getFaceProperty(dir), true);
+                        }
+                        if (p_222050_.hasProperty(BlockStateProperties.WATERLOGGED) && p_222050_.getValue(BlockStateProperties.WATERLOGGED)) {
+                            newState = newState.setValue(BlockStateProperties.WATERLOGGED, true);
+                        }
+                        p_222048_.setBlock(p_222049_, newState, 3);
+                        return true;
+                    }
                     return (p_222050_.isAir() || p_222050_.getFluidState().is(Fluids.WATER)) && ColoredSculkVein.regrow(p_222048_, p_222049_, p_222050_, p_222051_, spreaderColor);
                 } else {
                     return ColoredSculkBehaviour.super.attemptSpreadVein(p_222048_, p_222049_, p_222050_, p_222051_, p_222052_, spreaderColor);

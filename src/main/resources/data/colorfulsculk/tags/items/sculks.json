@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:sculk",
+    "colorfulsculk:black_sculk",
+    "colorfulsculk:blue_sculk",
+    "colorfulsculk:brown_sculk",
+    "colorfulsculk:cyan_sculk",
+    "colorfulsculk:gray_sculk",
+    "colorfulsculk:green_sculk",
+    "colorfulsculk:light_blue_sculk",
+    "colorfulsculk:light_gray_sculk",
+    "colorfulsculk:lime_sculk",
+    "colorfulsculk:magenta_sculk",
+    "colorfulsculk:orange_sculk",
+    "colorfulsculk:pink_sculk",
+    "colorfulsculk:purple_sculk",
+    "colorfulsculk:red_sculk",
+    "colorfulsculk:white_sculk",
+    "colorfulsculk:yellow_sculk"
+  ]
+}

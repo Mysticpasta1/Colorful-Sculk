@@ -4,7 +4,7 @@
   "group": "colored_sculk",
   "ingredients": [
     {
-      "item": "minecraft:sculk"
+      "tag": "colorfulsculk:sculks"
     },
     {
       "item": "minecraft:pink_dye"

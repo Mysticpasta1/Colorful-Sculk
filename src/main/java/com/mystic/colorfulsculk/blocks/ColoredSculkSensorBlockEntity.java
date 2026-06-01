@@ -23,7 +23,7 @@ public class ColoredSculkSensorBlockEntity extends SculkSensorBlockEntity {
     }
 
     @Override
-    public @NotNull User createVibrationUser() {
+    public VibrationSystem.@NotNull User createVibrationUser() {
         return new ColoredVibrationUser(this.getBlockPos());
     }
 
@@ -33,21 +33,23 @@ public class ColoredSculkSensorBlockEntity extends SculkSensorBlockEntity {
         }
 
         @Override
-        public void onReceiveVibration(@NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull GameEvent event, @Nullable Entity entity, @Nullable Entity projectileOwner, float distance) {
+        public void onReceiveVibration(ServerLevel level, BlockPos pos, GameEvent event, @Nullable Entity entity, @Nullable Entity projectileOwner, float distance) {
             BlockState blockstate = getBlockState();
             if (ColoredSculkSensorBlock.canActivate(blockstate)) {
                 Block block = blockstate.getBlock();
                 if (!(block instanceof ColoredSculkSensorBlock coloredBlock)) {
                     return;
                 }
-                DyeColor myColor = coloredBlock.getColor();
-                if (!isMatchingColorSource(level, pos, myColor)) {
-                    return;
-                }
 
-                setLastVibrationFrequency(VibrationSystem.getGameEventFrequency(event));
-                int i = VibrationSystem.getRedstoneStrengthForDistance(distance, this.getListenerRadius());
-                coloredBlock.activate(entity, level, this.blockPos, blockstate, i, getLastVibrationFrequency());
+                if (!isMatchingColorSource(level, pos, coloredBlock.getColor())) {
+                    BlockState sourceState = level.getBlockState(pos);
+                    Block sourceBlock = sourceState.getBlock();
+                    if (!(sourceBlock instanceof ColoredSculkSensorBlock && event != GameEvent.BLOCK_PLACE)) {
+                        setLastVibrationFrequency(VibrationSystem.getGameEventFrequency(event));
+                        int i = VibrationSystem.getRedstoneStrengthForDistance(distance, this.getListenerRadius());
+                        coloredBlock.activate(entity, level, this.blockPos, blockstate, i, getLastVibrationFrequency());
+                    }
+                }
             }
         }
 
@@ -65,6 +67,9 @@ public class ColoredSculkSensorBlockEntity extends SculkSensorBlockEntity {
                 BlockState adjacentState = level.getBlockState(adjacentPos);
                 Block adjacentBlock = adjacentState.getBlock();
                 if (adjacentBlock instanceof SculkSensorBlock) {
+                    return true;
+                }
+                if (adjacentBlock instanceof ColoredSculkSensorBlock sensor && sensor.getColor() == color) {
                     return true;
                 }
             }

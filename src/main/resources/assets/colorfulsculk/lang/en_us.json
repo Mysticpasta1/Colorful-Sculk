@@ -1,0 +1,102 @@
+{
+  "block.colorfulsculk.sculk_torch": "Sculk Torch",
+  "block.colorfulsculk.sculk_wall_torch": "Sculk Wall Torch",
+  "item.colorfulsculk.sculk_torch": "Sculk Torch",
+  "itemGroup.colorfulsculk.colorfulsculk_tab": "Colorful Sculk",
+
+  "block.colorfulsculk.white_sculk": "White Sculk",
+  "block.colorfulsculk.white_sculk_vein": "White Sculk Vein",
+  "block.colorfulsculk.white_sculk_catalyst": "White Sculk Catalyst",
+  "block.colorfulsculk.white_sculk_shrieker": "White Sculk Shrieker",
+  "block.colorfulsculk.white_sculk_sensor": "White Sculk Sensor",
+
+  "block.colorfulsculk.orange_sculk": "Orange Sculk",
+  "block.colorfulsculk.orange_sculk_vein": "Orange Sculk Vein",
+  "block.colorfulsculk.orange_sculk_catalyst": "Orange Sculk Catalyst",
+  "block.colorfulsculk.orange_sculk_shrieker": "Orange Sculk Shrieker",
+  "block.colorfulsculk.orange_sculk_sensor": "Orange Sculk Sensor",
+
+  "block.colorfulsculk.magenta_sculk": "Magenta Sculk",
+  "block.colorfulsculk.magenta_sculk_vein": "Magenta Sculk Vein",
+  "block.colorfulsculk.magenta_sculk_catalyst": "Magenta Sculk Catalyst",
+  "block.colorfulsculk.magenta_sculk_shrieker": "Magenta Sculk Shrieker",
+  "block.colorfulsculk.magenta_sculk_sensor": "Magenta Sculk Sensor",
+
+  "block.colorfulsculk.light_blue_sculk": "Light Blue Sculk",
+  "block.colorfulsculk.light_blue_sculk_vein": "Light Blue Sculk Vein",
+  "block.colorfulsculk.light_blue_sculk_catalyst": "Light Blue Sculk Catalyst",
+  "block.colorfulsculk.light_blue_sculk_shrieker": "Light Blue Sculk Shrieker",
+  "block.colorfulsculk.light_blue_sculk_sensor": "Light Blue Sculk Sensor",
+
+  "block.colorfulsculk.yellow_sculk": "Yellow Sculk",
+  "block.colorfulsculk.yellow_sculk_vein": "Yellow Sculk Vein",
+  "block.colorfulsculk.yellow_sculk_catalyst": "Yellow Sculk Catalyst",
+  "block.colorfulsculk.yellow_sculk_shrieker": "Yellow Sculk Shrieker",
+  "block.colorfulsculk.yellow_sculk_sensor": "Yellow Sculk Sensor",
+
+  "block.colorfulsculk.lime_sculk": "Lime Sculk",
+  "block.colorfulsculk.lime_sculk_vein": "Lime Sculk Vein",
+  "block.colorfulsculk.lime_sculk_catalyst": "Lime Sculk Catalyst",
+  "block.colorfulsculk.lime_sculk_shrieker": "Lime Sculk Shrieker",
+  "block.colorfulsculk.lime_sculk_sensor": "Lime Sculk Sensor",
+
+  "block.colorfulsculk.pink_sculk": "Pink Sculk",
+  "block.colorfulsculk.pink_sculk_vein": "Pink Sculk Vein",
+  "block.colorfulsculk.pink_sculk_catalyst": "Pink Sculk Catalyst",
+  "block.colorfulsculk.pink_sculk_shrieker": "Pink Sculk Shrieker",
+  "block.colorfulsculk.pink_sculk_sensor": "Pink Sculk Sensor",
+
+  "block.colorfulsculk.gray_sculk": "Gray Sculk",
+  "block.colorfulsculk.gray_sculk_vein": "Gray Sculk Vein",
+  "block.colorfulsculk.gray_sculk_catalyst": "Gray Sculk Catalyst",
+  "block.colorfulsculk.gray_sculk_shrieker": "Gray Sculk Shrieker",
+  "block.colorfulsculk.gray_sculk_sensor": "Gray Sculk Sensor",
+
+  "block.colorfulsculk.light_gray_sculk": "Light Gray Sculk",
+  "block.colorfulsculk.light_gray_sculk_vein": "Light Gray Sculk Vein",
+  "block.colorfulsculk.light_gray_sculk_catalyst": "Light Gray Sculk Catalyst",
+  "block.colorfulsculk.light_gray_sculk_shrieker": "Light Gray Sculk Shrieker",
+  "block.colorfulsculk.light_gray_sculk_sensor": "Light Gray Sculk Sensor",
+
+  "block.colorfulsculk.cyan_sculk": "Cyan Sculk",
+  "block.colorfulsculk.cyan_sculk_vein": "Cyan Sculk Vein",
+  "block.colorfulsculk.cyan_sculk_catalyst": "Cyan Sculk Catalyst",
+  "block.colorfulsculk.cyan_sculk_shrieker": "Cyan Sculk Shrieker",
+  "block.colorfulsculk.cyan_sculk_sensor": "Cyan Sculk Sensor",
+
+  "block.colorfulsculk.purple_sculk": "Purple Sculk",
+  "block.colorfulsculk.purple_sculk_vein": "Purple Sculk Vein",
+  "block.colorfulsculk.purple_sculk_catalyst": "Purple Sculk Catalyst",
+  "block.colorfulsculk.purple_sculk_shrieker": "Purple Sculk Shrieker",
+  "block.colorfulsculk.purple_sculk_sensor": "Purple Sculk Sensor",
+
+  "block.colorfulsculk.blue_sculk": "Blue Sculk",
+  "block.colorfulsculk.blue_sculk_vein": "Blue Sculk Vein",
+  "block.colorfulsculk.blue_sculk_catalyst": "Blue Sculk Catalyst",
+  "block.colorfulsculk.blue_sculk_shrieker": "Blue Sculk Shrieker",
+  "block.colorfulsculk.blue_sculk_sensor": "Blue Sculk Sensor",
+
+  "block.colorfulsculk.brown_sculk": "Brown Sculk",
+  "block.colorfulsculk.brown_sculk_vein": "Brown Sculk Vein",
+  "block.colorfulsculk.brown_sculk_catalyst": "Brown Sculk Catalyst",
+  "block.colorfulsculk.brown_sculk_shrieker": "Brown Sculk Shrieker",
+  "block.colorfulsculk.brown_sculk_sensor": "Brown Sculk Sensor",
+
+  "block.colorfulsculk.green_sculk": "Green Sculk",
+  "block.colorfulsculk.green_sculk_vein": "Green Sculk Vein",
+  "block.colorfulsculk.green_sculk_catalyst": "Green Sculk Catalyst",
+  "block.colorfulsculk.green_sculk_shrieker": "Green Sculk Shrieker",
+  "block.colorfulsculk.green_sculk_sensor": "Green Sculk Sensor",
+
+  "block.colorfulsculk.red_sculk": "Red Sculk",
+  "block.colorfulsculk.red_sculk_vein": "Red Sculk Vein",
+  "block.colorfulsculk.red_sculk_catalyst": "Red Sculk Catalyst",
+  "block.colorfulsculk.red_sculk_shrieker": "Red Sculk Shrieker",
+  "block.colorfulsculk.red_sculk_sensor": "Red Sculk Sensor",
+
+  "block.colorfulsculk.black_sculk": "Black Sculk",
+  "block.colorfulsculk.black_sculk_vein": "Black Sculk Vein",
+  "block.colorfulsculk.black_sculk_catalyst": "Black Sculk Catalyst",
+  "block.colorfulsculk.black_sculk_shrieker": "Black Sculk Shrieker",
+  "block.colorfulsculk.black_sculk_sensor": "Black Sculk Sensor"
+}

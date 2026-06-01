@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:sculk_vein",
+    "colorfulsculk:black_sculk_vein",
+    "colorfulsculk:blue_sculk_vein",
+    "colorfulsculk:brown_sculk_vein",
+    "colorfulsculk:cyan_sculk_vein",
+    "colorfulsculk:gray_sculk_vein",
+    "colorfulsculk:green_sculk_vein",
+    "colorfulsculk:light_blue_sculk_vein",
+    "colorfulsculk:light_gray_sculk_vein",
+    "colorfulsculk:lime_sculk_vein",
+    "colorfulsculk:magenta_sculk_vein",
+    "colorfulsculk:orange_sculk_vein",
+    "colorfulsculk:pink_sculk_vein",
+    "colorfulsculk:purple_sculk_vein",
+    "colorfulsculk:red_sculk_vein",
+    "colorfulsculk:white_sculk_vein",
+    "colorfulsculk:yellow_sculk_vein"
+  ]
+}

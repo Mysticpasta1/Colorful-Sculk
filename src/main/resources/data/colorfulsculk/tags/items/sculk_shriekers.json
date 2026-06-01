@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:sculk_shrieker",
+    "colorfulsculk:black_sculk_shrieker",
+    "colorfulsculk:blue_sculk_shrieker",
+    "colorfulsculk:brown_sculk_shrieker",
+    "colorfulsculk:cyan_sculk_shrieker",
+    "colorfulsculk:gray_sculk_shrieker",
+    "colorfulsculk:green_sculk_shrieker",
+    "colorfulsculk:light_blue_sculk_shrieker",
+    "colorfulsculk:light_gray_sculk_shrieker",
+    "colorfulsculk:lime_sculk_shrieker",
+    "colorfulsculk:magenta_sculk_shrieker",
+    "colorfulsculk:orange_sculk_shrieker",
+    "colorfulsculk:pink_sculk_shrieker",
+    "colorfulsculk:purple_sculk_shrieker",
+    "colorfulsculk:red_sculk_shrieker",
+    "colorfulsculk:white_sculk_shrieker",
+    "colorfulsculk:yellow_sculk_shrieker"
+  ]
+}

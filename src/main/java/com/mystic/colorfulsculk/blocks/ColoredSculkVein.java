@@ -97,11 +97,11 @@ public class ColoredSculkVein extends MultifaceBlock implements ColoredSculkBeha
     }
 
     public static boolean hasSubstrateAccess(LevelAccessor p_222355_, BlockState p_222356_, BlockPos p_222357_) {
-        if (!(p_222356_.getBlock() instanceof ColoredSculkVein)) {
+        if (!(p_222356_.getBlock() instanceof ColoredSculkVein sculkVein)) {
             return false;
         } else {
             for(Direction $$3 : DIRECTIONS) {
-                if (hasFace(p_222356_, $$3) && p_222355_.getBlockState(p_222357_.relative($$3)).is(BlockTags.SCULK_REPLACEABLE)) {
+                if (hasFace(p_222356_, $$3) && (isReplaceableSculk(p_222355_.getBlockState(p_222357_.relative($$3)), sculkVein.getColor()))) {
                     return true;
                 }
             }
@@ -151,7 +151,7 @@ public class ColoredSculkVein extends MultifaceBlock implements ColoredSculkBeha
             if (hasFace($$4, $$6)) {
                 BlockPos $$7 = p_222378_.relative($$6);
                 BlockState $$8 = p_222377_.getBlockState($$7);
-                if ($$8.is(BlockTags.SCULK_REPLACEABLE)) {
+                if ($$8.is(BlockTags.SCULK_REPLACEABLE) || isReplaceableSculk($$8, spreaderColor)) {
                     BlockState $$9 = BlockInit.COLORED_SCULK.get(spreaderColor).get().defaultBlockState();
                     p_222377_.setBlock($$7, $$9, 3);
                     Block.pushEntitiesUp($$8, $$9, p_222377_, $$7);
@@ -177,6 +177,14 @@ public class ColoredSculkVein extends MultifaceBlock implements ColoredSculkBeha
         return false;
     }
 
+    private static boolean isReplaceableSculk(BlockState state, DyeColor spreaderColor) {
+        Block block = state.getBlock();
+        if (block instanceof ColoredSculkBehaviour coloredSculk) {
+            return coloredSculk.getColor() != spreaderColor;
+        }
+        return block == Blocks.SCULK || block == Blocks.SCULK_VEIN || block == Blocks.SCULK_SHRIEKER || block == Blocks.SCULK_SENSOR;
+    }
+
     class ColoredSculkVeinSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConfig {
         private final MultifaceSpreader.SpreadType[] spreadTypes;
 
@@ -187,6 +195,9 @@ public class ColoredSculkVein extends MultifaceBlock implements ColoredSculkBeha
 
         @Override
         public boolean stateCanBeReplaced(BlockGetter p_222405_, @NotNull BlockPos p_222406_, BlockPos p_222407_, @NotNull Direction p_222408_, @NotNull BlockState p_222409_) {
+            if (p_222409_.getBlock() instanceof ColoredSculkVein sculkVein && sculkVein.getColor() != color) {
+                return true;
+            }
             BlockState $$5 = p_222405_.getBlockState(p_222407_.relative(p_222408_));
             if (!$$5.is(BlockInit.COLORED_SCULK.get(color).get()) && !$$5.is(BlockInit.COLORED_SCULK_CATALYST.get(color).get()) && !$$5.is(Blocks.MOVING_PISTON)) {
                 if (p_222406_.distManhattan(p_222407_) == 2) {

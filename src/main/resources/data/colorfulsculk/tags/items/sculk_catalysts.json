@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:sculk_catalyst",
+    "colorfulsculk:black_sculk_catalyst",
+    "colorfulsculk:blue_sculk_catalyst",
+    "colorfulsculk:brown_sculk_catalyst",
+    "colorfulsculk:cyan_sculk_catalyst",
+    "colorfulsculk:gray_sculk_catalyst",
+    "colorfulsculk:green_sculk_catalyst",
+    "colorfulsculk:light_blue_sculk_catalyst",
+    "colorfulsculk:light_gray_sculk_catalyst",
+    "colorfulsculk:lime_sculk_catalyst",
+    "colorfulsculk:magenta_sculk_catalyst",
+    "colorfulsculk:orange_sculk_catalyst",
+    "colorfulsculk:pink_sculk_catalyst",
+    "colorfulsculk:purple_sculk_catalyst",
+    "colorfulsculk:red_sculk_catalyst",
+    "colorfulsculk:white_sculk_catalyst",
+    "colorfulsculk:yellow_sculk_catalyst"
+  ]
+}

@@ -64,6 +64,10 @@ public abstract class SculkShriekerBlockEntityMixin {
             if (adjacentBlock instanceof SculkSensorBlock) {
                 return true;
             }
+
+            if (adjacentBlock instanceof ColoredSculkSensorBlock sensor && sensor.getColor() == color) {
+                return true;
+            }
         }
         return false;
     }

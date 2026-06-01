@@ -16,10 +16,6 @@ public class BlockEntityInit {
             BLOCK_ENTITIES.register("colored_sculk_catalyst",
                     () -> BlockEntityType.Builder.of(ColoredSculkCatalystBlockEntity::new, BlockInit.getCatalystBlocks()).build(null));
 
-    public static final RegistryObject<BlockEntityType<ColoredSculkSensorBlockEntity>> COLORED_SCULK_SENSOR =
-            BLOCK_ENTITIES.register("colored_sculk_sensor",
-                    () -> BlockEntityType.Builder.of(ColoredSculkSensorBlockEntity::new, BlockInit.getSensorBlocks()).build(null));
-
     public static void init(IEventBus bus) {
         BLOCK_ENTITIES.register(bus);
     }

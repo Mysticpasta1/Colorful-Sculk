@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:sculk_sensor",
+    "colorfulsculk:black_sculk_sensor",
+    "colorfulsculk:blue_sculk_sensor",
+    "colorfulsculk:brown_sculk_sensor",
+    "colorfulsculk:cyan_sculk_sensor",
+    "colorfulsculk:gray_sculk_sensor",
+    "colorfulsculk:green_sculk_sensor",
+    "colorfulsculk:light_blue_sculk_sensor",
+    "colorfulsculk:light_gray_sculk_sensor",
+    "colorfulsculk:lime_sculk_sensor",
+    "colorfulsculk:magenta_sculk_sensor",
+    "colorfulsculk:orange_sculk_sensor",
+    "colorfulsculk:pink_sculk_sensor",
+    "colorfulsculk:purple_sculk_sensor",
+    "colorfulsculk:red_sculk_sensor",
+    "colorfulsculk:white_sculk_sensor",
+    "colorfulsculk:yellow_sculk_sensor"
+  ]
+}
