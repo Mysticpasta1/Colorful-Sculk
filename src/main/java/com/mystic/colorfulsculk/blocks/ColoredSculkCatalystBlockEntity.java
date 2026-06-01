@@ -16,7 +16,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.BlockPositionSource;
@@ -26,42 +25,42 @@ import net.minecraft.world.level.gameevent.PositionSource;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-public class ColoredSculkCatalystBlockEntity extends BlockEntity implements GameEventListener.Holder<ColoredSculkCatalystBlockEntity.ColoredCatalystListener> {
-    private final ColoredCatalystListener catalystListener;
+public class ColoredSculkCatalystBlockEntity extends BlockEntity implements GameEventListener.Holder<ColoredSculkCatalystBlockEntity.CatalystListener> {
+    private final CatalystListener catalystListener;
 
     public ColoredSculkCatalystBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityInit.COLORED_SCULK_CATALYST.get(), pos, state);
-        this.catalystListener = new ColoredCatalystListener(state, new BlockPositionSource(pos));
+        this.catalystListener = new CatalystListener(state, new BlockPositionSource(pos));
     }
 
-    public static void serverTick(Level p_222780_, BlockPos p_222781_, BlockState p_222782_, ColoredSculkCatalystBlockEntity p_222783_) {
+    public static void serverTick(Level p_222780_, BlockPos p_222781_, ColoredSculkCatalystBlockEntity p_222783_) {
         p_222783_.catalystListener.getSpreader().updateCursors(p_222780_, p_222781_, p_222780_.getRandom(), true);
     }
 
     @Override
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
-        catalystListener.spreader.load(tag);
+        this.catalystListener.getSpreader().load(tag);
     }
 
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
-        catalystListener.spreader.save(tag);
+        this.catalystListener.getSpreader().save(tag);
         super.saveAdditional(tag);
     }
 
     @Override
-    public @NotNull ColoredCatalystListener getListener() {
+    public @NotNull CatalystListener getListener() {
         return catalystListener;
     }
 
-    public static class ColoredCatalystListener implements GameEventListener {
+    public static class CatalystListener implements GameEventListener {
         public static final int RADIUS = 8;
         private final ColoredSculkSpreader spreader;
         private final BlockState state;
         private final PositionSource positionSource;
 
-        public ColoredCatalystListener(BlockState state, PositionSource positionSource) {
+        public CatalystListener(BlockState state, PositionSource positionSource) {
             this.state = state;
             this.positionSource = positionSource;
             DyeColor color = state.getBlock() instanceof ColoredSculkCatalyst c ? c.getColor() : DyeColor.WHITE;
@@ -87,8 +86,7 @@ public class ColoredSculkCatalystBlockEntity extends BlockEntity implements Game
         public boolean handleGameEvent(@NotNull ServerLevel level, @NotNull GameEvent gameEvent, @NotNull GameEvent.Context context, @NotNull Vec3 vec3) {
             if (gameEvent == GameEvent.ENTITY_DIE) {
                 Entity var6 = context.sourceEntity();
-                if (var6 instanceof LivingEntity) {
-                    LivingEntity $$4 = (LivingEntity)var6;
+                if (var6 instanceof LivingEntity $$4) {
                     if (!$$4.wasExperienceConsumed()) {
                         int $$5 = $$4.getExperienceReward();
                         if ($$4.shouldDropExperience() && $$5 > 0) {
@@ -107,7 +105,6 @@ public class ColoredSculkCatalystBlockEntity extends BlockEntity implements Game
             return false;
         }
 
-        @VisibleForTesting
         public ColoredSculkSpreader getSpreader() {
             return spreader;
         }

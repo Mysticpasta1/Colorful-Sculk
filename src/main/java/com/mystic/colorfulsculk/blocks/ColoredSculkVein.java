@@ -6,12 +6,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -23,6 +20,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
@@ -33,7 +31,7 @@ public class ColoredSculkVein extends MultifaceBlock implements ColoredSculkBeha
     private final DyeColor color;
 
     public ColoredSculkVein(DyeColor color) {
-        super(BlockBehaviour.Properties.of().noCollission().noOcclusion().strength(0.2F).sound(SoundType.SCULK));
+        super(Properties.of().noCollission().noOcclusion().strength(0.2F).sound(SoundType.SCULK));
         this.veinSpreader = new MultifaceSpreader(new ColoredSculkVeinSpreaderConfig(MultifaceSpreader.DEFAULT_SPREAD_ORDER));
         this.sameSpaceSpreader = new MultifaceSpreader(new ColoredSculkVeinSpreaderConfig(MultifaceSpreader.SpreadType.SAME_POSITION));
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false));
@@ -46,7 +44,7 @@ public class ColoredSculkVein extends MultifaceBlock implements ColoredSculkBeha
     }
 
     @Override
-    public MultifaceSpreader getSpreader() {
+    public @NotNull MultifaceSpreader getSpreader() {
         return this.veinSpreader;
     }
 
@@ -98,49 +96,6 @@ public class ColoredSculkVein extends MultifaceBlock implements ColoredSculkBeha
         }
     }
 
-    @Override
-    public int attemptUseCharge(SculkSpreader.ChargeCursor p_222369_, LevelAccessor p_222370_, BlockPos p_222371_, RandomSource p_222372_, SculkSpreader p_222373_, boolean p_222374_) {
-        if (p_222374_ && this.attemptPlaceSculk(p_222373_, p_222370_, p_222369_.getPos(), p_222372_)) {
-            return p_222369_.getCharge() - 1;
-        } else {
-            return p_222372_.nextInt(p_222373_.chargeDecayRate()) == 0 ? Mth.floor((float)p_222369_.getCharge() * 0.5F) : p_222369_.getCharge();
-        }
-    }
-
-    private boolean attemptPlaceSculk(SculkSpreader p_222376_, LevelAccessor p_222377_, BlockPos p_222378_, RandomSource p_222379_) {
-        BlockState $$4 = p_222377_.getBlockState(p_222378_);
-        TagKey<Block> $$5 = p_222376_.replaceableBlocks();
-
-        for(Direction $$6 : Direction.allShuffled(p_222379_)) {
-            if (hasFace($$4, $$6)) {
-                BlockPos $$7 = p_222378_.relative($$6);
-                BlockState $$8 = p_222377_.getBlockState($$7);
-                if ($$8.is($$5)) {
-                    BlockState $$9 = BlockInit.COLORED_SCULK.get(color).get().defaultBlockState();
-                    p_222377_.setBlock($$7, $$9, 3);
-                    Block.pushEntitiesUp($$8, $$9, p_222377_, $$7);
-                    p_222377_.playSound((Player)null, $$7, SoundEvents.SCULK_BLOCK_SPREAD, SoundSource.BLOCKS, 1.0F, 1.0F);
-                    this.veinSpreader.spreadAll($$9, p_222377_, $$7, p_222376_.isWorldGeneration());
-                    Direction $$10 = $$6.getOpposite();
-
-                    for(Direction $$11 : DIRECTIONS) {
-                        if ($$11 != $$10) {
-                            BlockPos $$12 = $$7.relative($$11);
-                            BlockState $$13 = p_222377_.getBlockState($$12);
-                            if ($$13.is(this)) {
-                                this.onDischarged(p_222377_, $$13, $$12, p_222379_);
-                            }
-                        }
-                    }
-
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     public static boolean hasSubstrateAccess(LevelAccessor p_222355_, BlockState p_222356_, BlockPos p_222357_) {
         if (!(p_222356_.getBlock() instanceof ColoredSculkVein)) {
             return false;
@@ -156,7 +111,7 @@ public class ColoredSculkVein extends MultifaceBlock implements ColoredSculkBeha
     }
 
     @Override
-    public BlockState updateShape(BlockState p_222384_, Direction p_222385_, BlockState p_222386_, LevelAccessor p_222387_, BlockPos p_222388_, BlockPos p_222389_) {
+    public @NotNull BlockState updateShape(BlockState p_222384_, @NotNull Direction p_222385_, @NotNull BlockState p_222386_, @NotNull LevelAccessor p_222387_, @NotNull BlockPos p_222388_, @NotNull BlockPos p_222389_) {
         if (p_222384_.getValue(WATERLOGGED)) {
             p_222387_.scheduleTick(p_222388_, Fluids.WATER, Fluids.WATER.getTickDelay(p_222387_));
         }
@@ -165,31 +120,31 @@ public class ColoredSculkVein extends MultifaceBlock implements ColoredSculkBeha
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_222391_) {
+    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> p_222391_) {
         super.createBlockStateDefinition(p_222391_);
         p_222391_.add(WATERLOGGED);
     }
 
     @Override
-    public boolean canBeReplaced(BlockState p_222381_, BlockPlaceContext p_222382_) {
-        return !p_222382_.getItemInHand().is(Items.SCULK_VEIN) || super.canBeReplaced(p_222381_, p_222382_);
+    public boolean canBeReplaced(@NotNull BlockState p_222381_, BlockPlaceContext p_222382_) {
+        return !p_222382_.getItemInHand().is(BlockInit.COLORED_SCULK_VEIN.get(this.color).get().asItem()) || super.canBeReplaced(p_222381_, p_222382_);
     }
 
     @Override
-    public FluidState getFluidState(BlockState p_222394_) {
+    public @NotNull FluidState getFluidState(BlockState p_222394_) {
         return p_222394_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_222394_);
     }
 
     @Override
-    public int attemptUseCharge(ColoredSculkSpreader.Cursor cursor, LevelAccessor level, BlockPos catalystPos, RandomSource random, ColoredSculkSpreader spreader, boolean isWorldGen) {
-        if (isWorldGen && this.attemptPlaceSculk(spreader, level, cursor.getPos(), random, isWorldGen)) {
+    public int attemptUseCharge(ColoredSculkSpreader.ChargeCursor cursor, LevelAccessor level, BlockPos catalystPos, RandomSource random, ColoredSculkSpreader spreader, boolean isWorldGen) {
+        if (this.attemptPlaceSculk(spreader, level, cursor.getPos(), random, isWorldGen, spreader.getColor())) {
             return cursor.getCharge() - 1;
         } else {
             return random.nextInt(spreader.getChargeDecayRate()) == 0 ? Mth.floor((float)cursor.getCharge() * 0.5F) : cursor.getCharge();
         }
     }
 
-    private boolean attemptPlaceSculk(ColoredSculkSpreader p_222376_, LevelAccessor p_222377_, BlockPos p_222378_, RandomSource p_222379_, boolean isWorldGen) {
+    private boolean attemptPlaceSculk(ColoredSculkSpreader p_222376_, LevelAccessor p_222377_, BlockPos p_222378_, RandomSource p_222379_, boolean isWorldGen, DyeColor spreaderColor) {
         BlockState $$4 = p_222377_.getBlockState(p_222378_);
 
         for(Direction $$6 : Direction.allShuffled(p_222379_)) {
@@ -197,19 +152,19 @@ public class ColoredSculkVein extends MultifaceBlock implements ColoredSculkBeha
                 BlockPos $$7 = p_222378_.relative($$6);
                 BlockState $$8 = p_222377_.getBlockState($$7);
                 if ($$8.is(BlockTags.SCULK_REPLACEABLE)) {
-                    BlockState $$9 = BlockInit.COLORED_SCULK.get(color).get().defaultBlockState();
+                    BlockState $$9 = BlockInit.COLORED_SCULK.get(spreaderColor).get().defaultBlockState();
                     p_222377_.setBlock($$7, $$9, 3);
                     Block.pushEntitiesUp($$8, $$9, p_222377_, $$7);
                     p_222377_.playSound(null, $$7, SoundEvents.SCULK_BLOCK_SPREAD, SoundSource.BLOCKS, 1.0F, 1.0F);
-                    this.veinSpreader.spreadAll($$9, p_222377_, $$7, isWorldGen);
+                    ((ColoredSculkVein) BlockInit.COLORED_SCULK_VEIN.get(spreaderColor).get()).getSpreader().spreadAll($$9, p_222377_, $$7, isWorldGen);
                     Direction $$10 = $$6.getOpposite();
 
                     for(Direction $$11 : DIRECTIONS) {
                         if ($$11 != $$10) {
                             BlockPos $$12 = $$7.relative($$11);
                             BlockState $$13 = p_222377_.getBlockState($$12);
-                            if ($$13.is(this)) {
-                                this.onDischarged(p_222377_, $$13, $$12, p_222379_);
+                            if ($$13.is(BlockInit.COLORED_SCULK_VEIN.get(spreaderColor).get())) {
+                                ((ColoredSculkVein) $$13.getBlock()).onDischarged(p_222377_, $$13, $$12, p_222379_);
                             }
                         }
                     }
@@ -231,7 +186,7 @@ public class ColoredSculkVein extends MultifaceBlock implements ColoredSculkBeha
         }
 
         @Override
-        public boolean stateCanBeReplaced(BlockGetter p_222405_, BlockPos p_222406_, BlockPos p_222407_, Direction p_222408_, BlockState p_222409_) {
+        public boolean stateCanBeReplaced(BlockGetter p_222405_, @NotNull BlockPos p_222406_, BlockPos p_222407_, @NotNull Direction p_222408_, @NotNull BlockState p_222409_) {
             BlockState $$5 = p_222405_.getBlockState(p_222407_.relative(p_222408_));
             if (!$$5.is(BlockInit.COLORED_SCULK.get(color).get()) && !$$5.is(BlockInit.COLORED_SCULK_CATALYST.get(color).get()) && !$$5.is(Blocks.MOVING_PISTON)) {
                 if (p_222406_.distManhattan(p_222407_) == 2) {
@@ -255,7 +210,7 @@ public class ColoredSculkVein extends MultifaceBlock implements ColoredSculkBeha
         }
 
         @Override
-        public MultifaceSpreader.SpreadType[] getSpreadTypes() {
+        public MultifaceSpreader.SpreadType @NotNull [] getSpreadTypes() {
             return this.spreadTypes;
         }
 

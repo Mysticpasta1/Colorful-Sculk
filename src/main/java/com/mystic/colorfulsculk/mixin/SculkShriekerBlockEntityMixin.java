@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -39,14 +40,15 @@ public abstract class SculkShriekerBlockEntityMixin {
             if (info != null) {
                 BlockPos sourcePos = BlockPos.containing(info.pos());
                 DyeColor myColor = shrieker.getColor();
-                if (!isMatchingColorSource(level, sourcePos, myColor)) {
+                if (!colorfulsculk$isMatchingColorSource(level, sourcePos, myColor)) {
                     ci.cancel();
                 }
             }
         }
     }
 
-    private static boolean isMatchingColorSource(Level level, BlockPos pos, DyeColor color) {
+    @Unique
+    private static boolean colorfulsculk$isMatchingColorSource(Level level, BlockPos pos, DyeColor color) {
         BlockState sourceState = level.getBlockState(pos);
         Block sourceBlock = sourceState.getBlock();
         if (sourceBlock instanceof ColoredSculkSensorBlock sourceSensor) {
@@ -60,9 +62,6 @@ public abstract class SculkShriekerBlockEntityMixin {
             BlockState adjacentState = level.getBlockState(adjacentPos);
             Block adjacentBlock = adjacentState.getBlock();
             if (adjacentBlock instanceof SculkSensorBlock) {
-                return true;
-            }
-            if (adjacentBlock instanceof ColoredSculkSensorBlock sensor && sensor.getColor() == color) {
                 return true;
             }
         }

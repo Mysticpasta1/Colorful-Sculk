@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.entity.SculkSensorBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
+import org.jetbrains.annotations.NotNull;
 
 public class ColoredSculkSensorBlockEntity extends SculkSensorBlockEntity {
 
@@ -22,7 +23,7 @@ public class ColoredSculkSensorBlockEntity extends SculkSensorBlockEntity {
     }
 
     @Override
-    public VibrationSystem.User createVibrationUser() {
+    public @NotNull User createVibrationUser() {
         return new ColoredVibrationUser(this.getBlockPos());
     }
 
@@ -32,7 +33,7 @@ public class ColoredSculkSensorBlockEntity extends SculkSensorBlockEntity {
         }
 
         @Override
-        public void onReceiveVibration(ServerLevel level, BlockPos pos, GameEvent event, @Nullable Entity entity, @Nullable Entity projectileOwner, float distance) {
+        public void onReceiveVibration(@NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull GameEvent event, @Nullable Entity entity, @Nullable Entity projectileOwner, float distance) {
             BlockState blockstate = getBlockState();
             if (ColoredSculkSensorBlock.canActivate(blockstate)) {
                 Block block = blockstate.getBlock();
@@ -64,9 +65,6 @@ public class ColoredSculkSensorBlockEntity extends SculkSensorBlockEntity {
                 BlockState adjacentState = level.getBlockState(adjacentPos);
                 Block adjacentBlock = adjacentState.getBlock();
                 if (adjacentBlock instanceof SculkSensorBlock) {
-                    return true;
-                }
-                if (adjacentBlock instanceof ColoredSculkSensorBlock sensor && sensor.getColor() == color) {
                     return true;
                 }
             }

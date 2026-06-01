@@ -1,6 +1,5 @@
 package com.mystic.colorfulsculk.blocks;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.logging.LogUtils;
@@ -19,10 +18,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -34,24 +30,17 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class ColoredSculkSpreader {
-    public static final int MAX_GROWTH_RATE_RADIUS = 24;
-    public static final int MAX_CHARGE = 1000;
-    public static final float MAX_DECAY_FACTOR = 0.5F;
-    private static final int MAX_CURSORS = 32;
-    public static final int SHRIEKER_PLACEMENT_RATE = 11;
     final boolean isWorldGeneration;
-    private final TagKey<Block> replaceableBlocks;
     private final int growthSpawnCost;
     private final int noGrowthRadius;
     private final int chargeDecayRate;
     private final int additionalDecayRate;
-    private List<Cursor> cursors = new ArrayList<>();
+    private List<ChargeCursor> cursors = new ArrayList<>();
     private static final Logger LOGGER = LogUtils.getLogger();
     private final DyeColor color;
 
-    public ColoredSculkSpreader(boolean isWorldGeneration, TagKey<Block> replaceableBlocks, int growthSpawnCost, int noGrowthRadius, int chargeDecayRate, int additionalDecayRate, DyeColor color) {
+    public ColoredSculkSpreader(boolean isWorldGeneration, int growthSpawnCost, int noGrowthRadius, int chargeDecayRate, int additionalDecayRate, DyeColor color) {
         this.isWorldGeneration = isWorldGeneration;
-        this.replaceableBlocks = replaceableBlocks;
         this.growthSpawnCost = growthSpawnCost;
         this.noGrowthRadius = noGrowthRadius;
         this.chargeDecayRate = chargeDecayRate;
@@ -60,15 +49,7 @@ public class ColoredSculkSpreader {
     }
 
     public static ColoredSculkSpreader createLevelSpreader(DyeColor color) {
-        return new ColoredSculkSpreader(false, BlockTags.SCULK_REPLACEABLE, 10, 4, 10, 5, color);
-    }
-
-    public static ColoredSculkSpreader createWorldGenSpreader(DyeColor color) {
-        return new ColoredSculkSpreader(true, BlockTags.SCULK_REPLACEABLE_WORLD_GEN, 50, 1, 5, 10, color);
-    }
-
-    public TagKey<Block> replaceableBlocks() {
-        return this.replaceableBlocks;
+        return new ColoredSculkSpreader(false, 10, 4, 10, 5, color);
     }
 
     public int getGrowthSpawnCost() {
@@ -95,19 +76,10 @@ public class ColoredSculkSpreader {
         return this.color;
     }
 
-    @VisibleForTesting
-    public List<Cursor> getCursors() {
-        return this.cursors;
-    }
-
-    public void clear() {
-        this.cursors.clear();
-    }
-
     public void load(CompoundTag p_222270_) {
         if (p_222270_.contains("cursors", 9)) {
             this.cursors.clear();
-            List<Cursor> list = Cursor.CODEC.listOf().parse(new Dynamic<>(NbtOps.INSTANCE, p_222270_.getList("cursors", 10))).resultOrPartial(LOGGER::error).orElseGet(ArrayList::new);
+            List<ChargeCursor> list = ChargeCursor.CODEC.listOf().parse(new Dynamic<>(NbtOps.INSTANCE, p_222270_.getList("cursors", 10))).resultOrPartial(LOGGER::error).orElseGet(ArrayList::new);
             int i = Math.min(list.size(), 32);
 
             for (int j = 0; j < i; ++j) {
@@ -117,20 +89,18 @@ public class ColoredSculkSpreader {
     }
 
     public void save(CompoundTag p_222276_) {
-        Cursor.CODEC.listOf().encodeStart(NbtOps.INSTANCE, this.cursors).resultOrPartial(LOGGER::error).ifPresent((p_222273_) -> {
-            p_222276_.put("cursors", p_222273_);
-        });
+        ChargeCursor.CODEC.listOf().encodeStart(NbtOps.INSTANCE, this.cursors).resultOrPartial(LOGGER::error).ifPresent((p_222273_) -> p_222276_.put("cursors", p_222273_));
     }
 
     public void addCursors(BlockPos p_222267_, int p_222268_) {
         while (p_222268_ > 0) {
             int i = Math.min(p_222268_, 1000);
-            this.addCursor(new Cursor(p_222267_, i));
+            this.addCursor(new ChargeCursor(p_222267_, i));
             p_222268_ -= i;
         }
     }
 
-    private void addCursor(Cursor p_222261_) {
+    private void addCursor(ChargeCursor p_222261_) {
         if (this.cursors.size() < 32) {
             this.cursors.add(p_222261_);
         }
@@ -138,28 +108,26 @@ public class ColoredSculkSpreader {
 
     public void updateCursors(LevelAccessor p_222256_, BlockPos p_222257_, RandomSource p_222258_, boolean p_222259_) {
         if (!this.cursors.isEmpty()) {
-            List<Cursor> list = new ArrayList<>();
-            Map<BlockPos, Cursor> map = new HashMap<>();
+            List<ChargeCursor> list = new ArrayList<>();
+            Map<BlockPos, ChargeCursor> map = new HashMap<>();
             Object2IntMap<BlockPos> object2intmap = new Object2IntOpenHashMap<>();
 
-            for (Cursor sculkspreader$chargecursor : this.cursors) {
+            for (ChargeCursor sculkspreader$chargecursor : this.cursors) {
                 sculkspreader$chargecursor.update(p_222256_, p_222257_, p_222258_, this, p_222259_);
-                if (sculkspreader$chargecursor.charge <= 0) {
+                if (sculkspreader$chargecursor.getCharge() <= 0) {
                     p_222256_.levelEvent(3006, sculkspreader$chargecursor.getPos(), 0);
                 } else {
                     BlockPos blockpos = sculkspreader$chargecursor.getPos();
-                    object2intmap.computeInt(blockpos, (p_222264_, p_222265_) -> {
-                        return (p_222265_ == null ? 0 : p_222265_) + sculkspreader$chargecursor.charge;
-                    });
-                    Cursor sculkspreader$chargecursor1 = map.get(blockpos);
+                    object2intmap.computeInt(blockpos, (p_222264_, p_222265_) -> (p_222265_ == null ? 0 : p_222265_) + sculkspreader$chargecursor.getCharge());
+                    ChargeCursor sculkspreader$chargecursor1 = map.get(blockpos);
                     if (sculkspreader$chargecursor1 == null) {
                         map.put(blockpos, sculkspreader$chargecursor);
                         list.add(sculkspreader$chargecursor);
-                    } else if (!this.isWorldGen() && sculkspreader$chargecursor.charge + sculkspreader$chargecursor1.charge <= 1000) {
+                    } else if (!this.isWorldGen() && sculkspreader$chargecursor.getCharge() + sculkspreader$chargecursor1.getCharge() <= 1000) {
                         sculkspreader$chargecursor1.mergeWith(sculkspreader$chargecursor);
                     } else {
                         list.add(sculkspreader$chargecursor);
-                        if (sculkspreader$chargecursor.charge < sculkspreader$chargecursor1.charge) {
+                        if (sculkspreader$chargecursor.getCharge() < sculkspreader$chargecursor1.getCharge()) {
                             map.put(blockpos, sculkspreader$chargecursor);
                         }
                     }
@@ -169,10 +137,10 @@ public class ColoredSculkSpreader {
             for (Object2IntMap.Entry<BlockPos> entry : object2intmap.object2IntEntrySet()) {
                 BlockPos blockpos1 = entry.getKey();
                 int k = entry.getIntValue();
-                Cursor sculkspreader$chargecursor2 = map.get(blockpos1);
+                ChargeCursor sculkspreader$chargecursor2 = map.get(blockpos1);
                 Collection<Direction> collection = sculkspreader$chargecursor2 == null ? null : sculkspreader$chargecursor2.getFacingData();
                 if (k > 0 && collection != null) {
-                    int i = (int) (Math.log1p((double) k) / (double) 2.3F) + 1;
+                    int i = (int) (Math.log1p(k) / (double) 2.3F) + 1;
                     int j = (i << 6) + MultifaceBlock.pack(collection);
                     p_222256_.levelEvent(3006, blockpos1, j);
                 }
@@ -182,40 +150,27 @@ public class ColoredSculkSpreader {
         }
     }
 
-    public static class Cursor {
-        private static final ObjectArrayList<Vec3i> NON_CORNER_NEIGHBOURS = Util.make(new ObjectArrayList<>(18), (p_222338_) -> {
-            BlockPos.betweenClosedStream(new BlockPos(-1, -1, -1), new BlockPos(1, 1, 1)).filter((p_222336_) -> {
-                return (p_222336_.getX() == 0 || p_222336_.getY() == 0 || p_222336_.getZ() == 0) && !p_222336_.equals(BlockPos.ZERO);
-            }).map(BlockPos::immutable).forEach(p_222338_::add);
-        });
-        public static final int MAX_CURSOR_DECAY_DELAY = 1;
+    public static class ChargeCursor{
+        private static final ObjectArrayList<Vec3i> NON_CORNER_NEIGHBOURS = Util.make(new ObjectArrayList<>(18), (p_222338_) -> BlockPos.betweenClosedStream(new BlockPos(-1, -1, -1), new BlockPos(1, 1, 1)).filter((p_222336_) -> (p_222336_.getX() == 0 || p_222336_.getY() == 0 || p_222336_.getZ() == 0) && !p_222336_.equals(BlockPos.ZERO)).map(BlockPos::immutable).forEach(p_222338_::add));
         private BlockPos pos;
         int charge;
         private int updateDelay;
         private int decayDelay;
         @Nullable
         private Set<Direction> facings;
-        private static final Codec<Set<Direction>> DIRECTION_SET = Direction.CODEC.listOf().xmap((p_222340_) -> {
-            return Sets.newEnumSet(p_222340_, Direction.class);
-        }, Lists::newArrayList);
-        public static final Codec<Cursor> CODEC = RecordCodecBuilder.create((p_222330_) -> {
-            return p_222330_.group(BlockPos.CODEC.fieldOf("pos").forGetter(Cursor::getPos), Codec.intRange(0, 1000).fieldOf("charge").orElse(0).forGetter(Cursor::getCharge), Codec.intRange(0, 1).fieldOf("decay_delay").orElse(1).forGetter(Cursor::getDecayDelay), Codec.intRange(0, Integer.MAX_VALUE).fieldOf("update_delay").orElse(0).forGetter((p_222346_) -> {
-                return p_222346_.updateDelay;
-            }), DIRECTION_SET.optionalFieldOf("facings").forGetter((p_222343_) -> {
-                return Optional.ofNullable(p_222343_.getFacingData());
-            })).apply(p_222330_, Cursor::new);
-        });
+        private static final Codec<Set<Direction>> DIRECTION_SET = Direction.CODEC.listOf().xmap((p_222340_) -> Sets.newEnumSet(p_222340_, Direction.class), Lists::newArrayList);
+        public static final Codec<ChargeCursor> CODEC = RecordCodecBuilder.create((p_222330_) -> p_222330_.group(BlockPos.CODEC.fieldOf("pos").forGetter(ChargeCursor::getPos), Codec.intRange(0, 1000).fieldOf("charge").orElse(0).forGetter(ChargeCursor::getCharge), Codec.intRange(0, 1).fieldOf("decay_delay").orElse(1).forGetter(ChargeCursor::getDecayDelay), Codec.intRange(0, Integer.MAX_VALUE).fieldOf("update_delay").orElse(0).forGetter((p_222346_) -> p_222346_.updateDelay), DIRECTION_SET.fieldOf("facings").forGetter((p_222343_) -> p_222343_.facings)).apply(p_222330_, ChargeCursor::new));
 
-        private Cursor(BlockPos p_222299_, int p_222300_, int p_222301_, int p_222302_, Optional<Set<Direction>> p_222303_) {
+        public ChargeCursor(BlockPos p_222299_, int p_222300_, int p_222301_, int p_222302_, @org.jetbrains.annotations.Nullable Set<Direction> p_222303_) {
             this.pos = p_222299_;
             this.charge = p_222300_;
             this.decayDelay = p_222301_;
             this.updateDelay = p_222302_;
-            this.facings = p_222303_.orElse((Set<Direction>) null);
+            this.facings = p_222303_;
         }
 
-        public Cursor(BlockPos p_222296_, int p_222297_) {
-            this(p_222296_, p_222297_, 1, 0, Optional.empty());
+        public ChargeCursor(BlockPos p_222296_, int p_222297_) {
+            this(p_222296_, p_222297_, 1, 0, null);
         }
 
         public BlockPos getPos() {
@@ -240,8 +195,7 @@ public class ColoredSculkSpreader {
                 return false;
             } else if (p_222328_) {
                 return true;
-            } else if (p_222326_ instanceof ServerLevel) {
-                ServerLevel serverlevel = (ServerLevel) p_222326_;
+            } else if (p_222326_ instanceof ServerLevel serverlevel) {
                 return serverlevel.shouldTickBlocksAt(p_222327_);
             } else {
                 return false;
@@ -255,13 +209,13 @@ public class ColoredSculkSpreader {
                 } else {
                     BlockState blockstate = p_222312_.getBlockState(this.pos);
                     ColoredSculkBehaviour sculkbehaviour = getBlockBehaviour(blockstate, p_222315_.getColor());
-                    if (p_222316_ && sculkbehaviour.attemptSpreadVein(p_222312_, this.pos, blockstate, this.facings, p_222315_.isWorldGen())) {
+                    if (p_222316_ && sculkbehaviour.attemptSpreadVein(p_222312_, this.pos, blockstate, this.facings, p_222315_.isWorldGen(), p_222315_.getColor())) {
                         if (sculkbehaviour.canChangeBlockStateOnSpread()) {
                             blockstate = p_222312_.getBlockState(this.pos);
                             sculkbehaviour = getBlockBehaviour(blockstate, p_222315_.getColor());
                         }
 
-                        p_222312_.playSound((Player) null, this.pos, SoundEvents.SCULK_BLOCK_SPREAD, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        p_222312_.playSound(null, this.pos, SoundEvents.SCULK_BLOCK_SPREAD, SoundSource.BLOCKS, 1.0F, 1.0F);
                     }
 
                     this.charge = sculkbehaviour.attemptUseCharge(this, p_222312_, p_222313_, p_222314_, p_222315_, p_222315_.isWorldGen());
@@ -291,7 +245,7 @@ public class ColoredSculkSpreader {
             }
         }
 
-        void mergeWith(Cursor p_222332_) {
+        void mergeWith(ChargeCursor p_222332_) {
             this.charge += p_222332_.charge;
             p_222332_.charge = 0;
             this.updateDelay = Math.min(this.updateDelay, p_222332_.updateDelay);

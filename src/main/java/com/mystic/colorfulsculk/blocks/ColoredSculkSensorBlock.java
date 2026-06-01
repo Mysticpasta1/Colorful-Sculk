@@ -4,6 +4,7 @@ import net.minecraft.Util;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.SculkSensorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -14,7 +15,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -29,7 +29,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
 import org.jetbrains.annotations.NotNull;
 
-public class ColoredSculkSensorBlock extends BaseEntityBlock {
+public class ColoredSculkSensorBlock extends SculkSensorBlock {
     public static final IntegerProperty POWER = BlockStateProperties.POWER;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<SculkSensorPhase> PHASE = EnumProperty.create("sculk_sensor_phase", SculkSensorPhase.class);
@@ -42,7 +42,7 @@ public class ColoredSculkSensorBlock extends BaseEntityBlock {
     });
     private final DyeColor color;
 
-    public ColoredSculkSensorBlock(BlockBehaviour.Properties p_277588_, DyeColor color) {
+    public ColoredSculkSensorBlock(Properties p_277588_, DyeColor color) {
         super(p_277588_);
         this.registerDefaultState(this.stateDefinition.any().setValue(PHASE, SculkSensorPhase.INACTIVE).setValue(POWER, 0).setValue(WATERLOGGED, false));
         this.color = color;

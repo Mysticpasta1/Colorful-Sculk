@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import org.jetbrains.annotations.NotNull;
 
 public class ColoredSculkCatalyst extends BaseEntityBlock {
     public static final BooleanProperty PULSE = BlockStateProperties.BLOOM;
@@ -28,7 +29,7 @@ public class ColoredSculkCatalyst extends BaseEntityBlock {
     private final IntProvider xpRange = ConstantInt.of(5);
 
     public ColoredSculkCatalyst(DyeColor color) {
-        super(BlockBehaviour.Properties.of().strength(0.2F).sound(SoundType.SCULK));
+        super(Properties.of().strength(0.2F).sound(SoundType.SCULK));
         this.registerDefaultState(this.stateDefinition.any().setValue(PULSE, false));
         this.color = color;
     }
@@ -43,28 +44,28 @@ public class ColoredSculkCatalyst extends BaseEntityBlock {
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (state.getValue(PULSE)) {
             level.setBlock(pos, state.setValue(PULSE, false), 3);
         }
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new ColoredSculkCatalystBlockEntity(pos, state);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         if (level.isClientSide) return null;
         if (type != BlockEntityInit.COLORED_SCULK_CATALYST.get()) return null;
-        BlockEntityTicker<ColoredSculkCatalystBlockEntity> ticker = ColoredSculkCatalystBlockEntity::serverTick;
+        BlockEntityTicker<ColoredSculkCatalystBlockEntity> ticker = (p_222780_, p_222781_, p_222782_, p_222783_) -> ColoredSculkCatalystBlockEntity.serverTick(p_222780_, p_222781_, p_222783_);
         return (BlockEntityTicker<T>) ticker;
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState state) {
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
         return RenderShape.MODEL;
     }
 
